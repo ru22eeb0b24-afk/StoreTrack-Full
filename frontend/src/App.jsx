@@ -1,4 +1,16 @@
+import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+
 function App() {
+  const [apiMessage, setApiMessage] = useState("Loading...");
+
+  useEffect(() => {
+    fetch("https://storetrack-full.onrender.com/")
+      .then((res) => res.json())
+      .then((data) => setApiMessage(data.message))
+      .catch(() => setApiMessage("API Connection Failed"));
+  }, []);
+
   const products = [
     { id: 1, name: "Mouse", stock: 3, price: 499 },
     { id: 2, name: "Keyboard", stock: 5, price: 999 },
@@ -14,11 +26,21 @@ function App() {
         padding: "20px",
       }}
     >
-      <h1 style={{ marginBottom: "20px" }}>
+      <h1 style={{ marginBottom: "10px" }}>
         📦 StoreTrack Dashboard
       </h1>
 
-      {/* Stats Cards */}
+      <p
+        style={{
+          background: "#d1e7dd",
+          padding: "10px",
+          borderRadius: "8px",
+          marginBottom: "20px",
+        }}
+      >
+        Backend Status: <b>{apiMessage}</b>
+      </p>
+
       <div
         style={{
           display: "grid",
@@ -32,7 +54,6 @@ function App() {
             background: "white",
             padding: "20px",
             borderRadius: "12px",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
           }}
         >
           <h3>Total Products</h3>
@@ -44,7 +65,6 @@ function App() {
             background: "white",
             padding: "20px",
             borderRadius: "12px",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
           }}
         >
           <h3>Total Customers</h3>
@@ -56,7 +76,6 @@ function App() {
             background: "white",
             padding: "20px",
             borderRadius: "12px",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
           }}
         >
           <h3>Total Orders</h3>
@@ -68,7 +87,6 @@ function App() {
             background: "white",
             padding: "20px",
             borderRadius: "12px",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
           }}
         >
           <h3>Revenue</h3>
@@ -76,7 +94,6 @@ function App() {
         </div>
       </div>
 
-      {/* Low Stock Alert */}
       <div
         style={{
           background: "#fff3cd",
@@ -92,13 +109,11 @@ function App() {
         </ul>
       </div>
 
-      {/* Product Table */}
       <div
         style={{
           background: "white",
           padding: "20px",
           borderRadius: "12px",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
         }}
       >
         <h2>Products</h2>
@@ -107,59 +122,28 @@ function App() {
           style={{
             width: "100%",
             borderCollapse: "collapse",
-            marginTop: "15px",
           }}
         >
           <thead>
             <tr style={{ background: "#f0f0f0" }}>
-              <th style={{ padding: "12px" }}>ID</th>
-              <th style={{ padding: "12px" }}>Product</th>
-              <th style={{ padding: "12px" }}>Stock</th>
-              <th style={{ padding: "12px" }}>Price</th>
+              <th>ID</th>
+              <th>Product</th>
+              <th>Stock</th>
+              <th>Price</th>
             </tr>
           </thead>
 
           <tbody>
             {products.map((product) => (
               <tr key={product.id}>
-                <td style={{ padding: "12px", textAlign: "center" }}>
-                  {product.id}
-                </td>
-
-                <td style={{ padding: "12px" }}>
-                  {product.name}
-                </td>
-
-                <td style={{ padding: "12px" }}>
-                  {product.stock}
-                </td>
-
-                <td style={{ padding: "12px" }}>
-                  ₹{product.price}
-                </td>
+                <td>{product.id}</td>
+                <td>{product.name}</td>
+                <td>{product.stock}</td>
+                <td>₹{product.price}</td>
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
-
-      {/* Recent Orders */}
-      <div
-        style={{
-          background: "white",
-          padding: "20px",
-          borderRadius: "12px",
-          marginTop: "25px",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-        }}
-      >
-        <h2>Recent Orders</h2>
-
-        <ul>
-          <li>Order #101 - Mouse x2</li>
-          <li>Order #102 - Keyboard x1</li>
-          <li>Order #103 - Monitor x1</li>
-        </ul>
       </div>
     </div>
   );
